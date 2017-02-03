@@ -1,36 +1,59 @@
 package com.clementlusson.sudoku;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import java.util.ArrayList;
+import java.util.Random;
 
-class monObject{
+public class GridChoice extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
-    public monObject(){
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            Intent defineIntent = new Intent(GridChoice.this, ChargeGrid.class);
+            startActivity(defineIntent);
+    }
+
+    public class vGrille{
+        int level;
+        int num;
+        int done;
+
+        public vGrille (){
+
+        }
+        public vGrille(int level, int num, int done){
+            this.level = level;
+            this.num = num;
+            this.done = done;
+        }
 
     }
-    public String toString(){
-        return " TOTO";
-    }
-}
-public class GridChoice extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bun  =  this.getIntent().getExtras();
-        Log.d("MYMESSAGE", bun.toString());
         setContentView(R.layout.activity_grid_choice);
 
         if (bun != null)
         {
-            ListView liste = (ListView) findViewById(R.id.liste);
-            String [] values = new String[] {"1", String.valueOf(bun.getInt("levelKey"))};
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                    android.R.layout.simple_list_item_1, android.R.id.text1, values);
+                ListView liste = (ListView) findViewById(R.id.liste);
+                ArrayList<vGrille> values = new ArrayList<vGrille>();
+                Random rand = new Random();
 
-            liste.setAdapter(adapter);
+                for (int i = 0; i < 3; i++) {
+                    values.add(new vGrille(bun.getInt("levelKey"),i+1,rand.nextInt(100)));
+                }
+                MyAdapter adapter = new MyAdapter(this,values);
+                liste.setAdapter(adapter);
+                liste.setOnItemClickListener(this);
         }
     }
 }

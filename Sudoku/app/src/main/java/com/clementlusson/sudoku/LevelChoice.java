@@ -24,11 +24,13 @@ public class LevelChoice extends AppCompatActivity implements View.OnClickListen
         Intent intent = new Intent(this, GridChoice.class);
         Bundle bun = new Bundle();
 
-        if (id == R.id.level1) {
-            bun.putInt("levelKey",1);
-
-        } else if (id == R.id.level2) {
-            bun.putInt("levelKey",2);
+        switch (id) {
+            case R.id.level1:
+                bun.putInt("levelKey", 1);
+                break;
+            case R.id.level2:
+                bun.putInt("levelKey", 2);
+                break;
         }
         intent.putExtras(bun);
         startActivity(intent);
