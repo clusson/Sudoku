@@ -9,5 +9,9 @@ public class ChargeGrid extends  AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_charge_grid);
+
+        vGrille test = getIntent().getExtras().getParcelable("vGrille");
+        System.out.println(test);
+
     }
 }

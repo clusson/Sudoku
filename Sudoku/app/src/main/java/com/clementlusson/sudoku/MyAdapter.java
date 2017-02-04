@@ -15,9 +15,9 @@ import java.util.ArrayList;
 class MyAdapter extends BaseAdapter {
 
     private Context context;
-    private ArrayList<GridChoice.vGrille> items;
+    private ArrayList<vGrille> items;
 
-    public MyAdapter(Context context, ArrayList<GridChoice.vGrille> items) {
+    public MyAdapter(Context context, ArrayList<vGrille> items) {
         this.context = context;
         this.items = items;
     }

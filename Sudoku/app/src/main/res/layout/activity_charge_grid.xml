@@ -3,6 +3,7 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
+
     <com.clementlusson.sudoku.GridDraw
         android:id="@+id/dessin"
         android:layout_width="fill_parent"

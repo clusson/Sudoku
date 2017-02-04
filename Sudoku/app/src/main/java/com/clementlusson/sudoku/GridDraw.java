@@ -21,20 +21,20 @@ public class GridDraw extends View implements View.OnTouchListener{
     private static final String TAG = "Sudoku";
     private static final int GRID_MARGIN = 5;
     private int top, bottom, left, right;
-    private int XOfSelection = 0;
-    private int YOfSelection = 0;
-    private float tileWidth = 0f;
-    private float tileHeight = 0f;
-    private Rect rect = new Rect();
-    private int tab [][];
-    private GridChoice mParams;
+
+
+    private ChargeGrid game;
     private int largeur;
     private int hauteur;
 
+    String grid ="001700509573024106800501002700295018009400305652800007465080071000159004908007053";
 
 
     public GridDraw(Context context, AttributeSet attrs) {
         super(context,attrs);
+        this.setOnTouchListener(this);
+        this.game = (ChargeGrid) context;
+
     }
 
 
@@ -45,7 +45,7 @@ public class GridDraw extends View implements View.OnTouchListener{
 
         grid.setColor(Color.GRAY);
         grid.setStyle(Paint.Style.STROKE);
-        grid.setStrokeWidth(4);
+
 
         //Taille des cases
         int gm = 80;
@@ -61,23 +61,36 @@ public class GridDraw extends View implements View.OnTouchListener{
                 canvas.drawRect(left, top, right, bottom, grid);
             }
         }
+
+        for (int i=0; i<9; i++)
+        {
+            top = 10*gm;
+            bottom = top+gm;
+            left = i*gm;
+            right = left+gm;
+            canvas.drawRect(left, top, right, bottom, grid);
+            grid.setTextSize(55);
+            canvas.drawText(String.valueOf(i+1),right-gm+23,bottom-20,grid);
+
+        }
+
         largeur = canvas.getWidth();
         hauteur = canvas.getHeight();
 
+        Rect rect = new Rect();
+
     }
-
-
+    
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        int x = (int) event.getX();
-        int y = (int) event.getY();
+        int x = (int) (event.getX()/80) +1;
+        int y = (int) (event.getY()/80) +1;
 
         switch (event.getAction())
         {
             case MotionEvent.ACTION_DOWN:
-
-
+                Toast.makeText(this.getContext(),"X" + x + " | Y" +y,Toast.LENGTH_SHORT).show();
                 break;
             case MotionEvent.ACTION_MOVE:
 
