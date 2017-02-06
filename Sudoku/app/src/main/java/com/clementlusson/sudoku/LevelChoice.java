@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class ALevelChoice extends AppCompatActivity {
+public class LevelChoice extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
