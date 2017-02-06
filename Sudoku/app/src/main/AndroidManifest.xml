@@ -17,7 +17,7 @@
         </activity>
 
         <activity android:name=".LevelChoice" />
-        <activity android:name=".GridChoice"></activity>
+        <activity android:name=".Grid"></activity>
     </application>
 
 </manifest>

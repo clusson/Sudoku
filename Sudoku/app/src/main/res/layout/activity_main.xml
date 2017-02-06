@@ -7,17 +7,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
+        <TextView
+            android:text="Choix du niveau :"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:id="@+id/textView" />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/lvl1"
-            android:text="Niveau 1" />
+            android:text="Niveau 1"
+            style="@android:style/Widget.Material.Button.Borderless.Colored" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/lvl2"
-            android:text="Niveau 2"/>
+            android:text="Niveau 2"
+            style="@android:style/Widget.Material.Button.Borderless.Colored" />
 
     </LinearLayout>
 

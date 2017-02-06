@@ -4,11 +4,9 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -17,28 +15,31 @@ public class GridDraw extends View implements View.OnTouchListener{
     NumberSelect selectedNumber = null;
 
     Cell[][] arrCell = new Cell [9][9];
+
     NumberSelect[] arrNumber = new NumberSelect[9];
-    Integer totalFillGrid;
+    vGrid grid;
     Integer startFillGrid;
-    vGrille grid;
+    Integer totalFillGrid;
 
 
     public GridDraw(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        grid = ((GridChoice) context).getGrid();
+        grid = ((Grid) context).getGrid();
         int i = 0;
-        for(int column = 0; column < 9; column++){
+        for(int col = 0; col < 9; col++){
             for (int row = 0 ; row < 9; row++){
-                Cell c = new Cell(new CellNumber(Character.getNumericValue(grid.grid.toCharArray()[i])), new Pair(row, column), 100 * column, 100 * row, (100 * column + 100), (100 * row + 100));
-                arrCell[row][column] = c;
+                Cell c = new Cell(new CellNumber(Character.getNumericValue(grid.grid.toCharArray()[i])), new Pair(row, col), 100 * col, 100 * row, (100 * col + 100), (100 * row + 100));
+                arrCell[row][col] = c;
                 i += 1;
             }
         }
-        startFillGrid = getRemplissageGrid();
-        for(int place = 0; place < 9; place++){
-            arrNumber[place] = new NumberSelect(place + 1, 100 * place, 880 , 0, 100 * place);
+        //draw numbers as keypad
+        for(int key = 0; key < 9; key++){
+            arrNumber[key] = new NumberSelect(key + 1, 100 * key + 10, 1000,  100 * key + 100,1100);
         }
+
+        startFillGrid = getFillingGrid();
     }
 
 
@@ -61,9 +62,9 @@ public class GridDraw extends View implements View.OnTouchListener{
                 canvas.drawLine(0, row * 100, 900, row * 100, paint);
             }
         }
-        for (int column = 0 ; column < 9; column++) {
-            if(column % 3 == 0){
-                canvas.drawLine(column * 100, 0, column * 100, 900, paint);
+        for (int col = 0 ; col < 9; col++) {
+            if(col % 3 == 0){
+                canvas.drawLine(col * 100, 0, col * 100, 900, paint);
             }
         }
 
@@ -98,18 +99,19 @@ public class GridDraw extends View implements View.OnTouchListener{
                         }
                     }
                 }
+
                 if(selectedcase != null){
                     ArrayList<Cell> arrC = getGroupe(selectedcase);
-                    boolean ok = true;
+                    boolean good = true;
                     for(Cell c : arrC){
-                        if(c.i.content == selectedNumber.i){
-                            Log.d("Case", "case " + c.position.first + " " + c.position.second + " content : " + c.i.content);
-                            ok = false;
+                        if(c.i.nb == selectedNumber.i){
+                            good = false;
                         }
                     }
-                    if(ok){
+                    //Check if win
+                    if(good){
                         selectedcase.i.setNumber(selectedNumber.i);
-                        totalFillGrid = getRemplissageGrid();
+                        totalFillGrid = getFillingGrid();
                         grid.done = (totalFillGrid - startFillGrid) / (81 - startFillGrid) * 100;
                         grid.grid = getGrid();
                     }
@@ -123,11 +125,11 @@ public class GridDraw extends View implements View.OnTouchListener{
         return true;
     }
 
-    public int getRemplissageGrid(){
+    public int getFillingGrid(){
         int r = 0;
-        for(Cell[] arrC : this.arrCell){
-            for(Cell currentC : arrC){
-                if(currentC.i.content != 0){
+        for(Cell[] arr : this.arrCell){
+            for(Cell c : arr){
+                if(c.i.nb != 0){
                     r+=1;
                 }
             }
@@ -136,26 +138,26 @@ public class GridDraw extends View implements View.OnTouchListener{
     }
 
     public String getGrid(){
-        StringBuilder r = new StringBuilder();
-        for(Cell[] arrC : this.arrCell){
-            for(Cell currentC : arrC){
-                if(currentC.i.content != 0){
-                    r.append(currentC.i.content);
+        StringBuilder s = new StringBuilder();
+        for(Cell[] arr : this.arrCell){
+            for(Cell c : arr){
+                if(c.i.nb != 0){
+                    s.append(c.i.change);
                 }
             }
         }
-        return r.toString();
+        return s.toString();
     }
 
     public ArrayList<Cell> getGroupe(Cell c){
-        ArrayList<Cell> rt = new ArrayList<>();
+        ArrayList<Cell> ar = new ArrayList<>();
         for(Cell[] arrC : this.arrCell){
-            for(Cell currentC : arrC){
-                if(c.isOnGroup(currentC)){
-                    rt.add(currentC);
+            for(Cell cell : arrC){
+                if(c.isOnGroup(cell)){
+                    ar.add(cell);
                 }
             }
         }
-        return rt;
+        return ar;
     }
 }

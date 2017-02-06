@@ -15,9 +15,9 @@ import java.util.ArrayList;
 class MyAdapter extends BaseAdapter {
 
     private Context context;
-    private ArrayList<vGrille> items;
+    private ArrayList<vGrid> items;
 
-    public MyAdapter(Context context, ArrayList<vGrille> items) {
+    public MyAdapter(Context context, ArrayList<vGrid> items) {
         this.context = context;
         this.items = items;
     }
@@ -66,7 +66,5 @@ class MyAdapter extends BaseAdapter {
         text2.setTypeface(typeface);
 
         return twoLineListItem;
-
-
     }
 }

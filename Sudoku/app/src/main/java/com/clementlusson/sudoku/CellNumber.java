@@ -4,39 +4,35 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
-/**
- * Created by Clement on 06/02/2017.
- */
-
 public class CellNumber {
-    Integer content;
-    boolean editable;
+    Integer nb;
+    boolean change;
 
-    public CellNumber(int content) {
-        this.content = content;
-        if (content == 0) {
-            this.editable = true;
+    public CellNumber(int nb) {
+        this.nb = nb;
+        if (nb == 0) {
+            this.change = true;
         } else {
-            this.editable = false;
+            this.change = false;
         }
 
 
     }
 
-    public void draw(Rect rectangle, Canvas canvas) {
-        if (!(content == 0)) {
+    public void draw(Rect rect, Canvas canvas) {
+        if (!(nb == 0)) {
             Paint paint = new Paint();
             paint.setTextSize(40);
-            if (!editable) {
+            if (!change) {
                 paint.setFakeBoldText(true);
             }
-            canvas.drawText(content.toString(), rectangle.left + 40, rectangle.top + 60, paint);
+            canvas.drawText(nb.toString(), rect.left + 40, rect.top + 60, paint);
         }
     }
 
-    public void setNumber(int content) {
-        if (editable) {
-            this.content = content;
+    public void setNumber(int nb) {
+        if (change) {
+            this.nb = nb;
         }
 
     }

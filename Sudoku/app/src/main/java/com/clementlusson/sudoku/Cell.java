@@ -6,25 +6,22 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Pair;
 
-/**
- * Created by Clement on 06/02/2017.
- */
 
 public class Cell {
     Rect rectangle;
     CellNumber i ;
-    Pair<Integer, Integer> position;
+    Pair<Integer, Integer> pos;
 
-    Cell(CellNumber cs, Pair<Integer, Integer> position, int top, int left, int bottom, int right){
+    Cell(CellNumber cn, Pair<Integer, Integer> pos, int top, int left, int bottom, int right){
         this.rectangle = new Rect(top, left, bottom, right);
-        this.i = cs;
-        this.position = position;
+        this.i = cn;
+        this.pos = pos;
     }
 
     public void draw(Canvas canvas){
         Paint paintrect = new Paint();
         paintrect.setStyle(Paint.Style.FILL);
-        paintrect.setColor(Color.WHITE);
+        paintrect.setColor(Color.TRANSPARENT);
         canvas.drawRect(rectangle, paintrect);
 
         paintrect.setStrokeWidth(1);
@@ -35,16 +32,16 @@ public class Cell {
         i.draw(rectangle, canvas);
 
     }
-
+    //Check if key is selected in event action
     public boolean isSelected(int x, int y){
         return x > rectangle.left && x < rectangle.right && y > rectangle.top && y < rectangle.bottom;
     }
 
     public boolean isOnGroup(Cell c){
-        if(this.position.first == c.position.first || this.position.second == c.position.second){
+        if(this.pos.first == c.pos.first || this.pos.second == c.pos.second){
             return true;
         }
-        if(this.position.first / 3 == c.position.first / 3 && this.position.second / 3 == c.position.second / 3){
+        if(this.pos.first / 3 == c.pos.first / 3 && this.pos.second / 3 == c.pos.second / 3){
             return true;
         }
         return false;

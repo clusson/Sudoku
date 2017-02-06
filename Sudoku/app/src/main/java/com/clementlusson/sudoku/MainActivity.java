@@ -8,6 +8,7 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
+    //Start activity with levels
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    //Set the level to get a grids
     @Override
     public void onClick(View v) {
         Intent intention = new Intent(this, LevelChoice.class);

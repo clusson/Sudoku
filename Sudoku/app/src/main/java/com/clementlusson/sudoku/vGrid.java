@@ -2,14 +2,14 @@ package com.clementlusson.sudoku;
 
 import java.io.Serializable;
 
-public class vGrille implements Serializable {
+public class vGrid implements Serializable {
 
     public Integer lvl;
     public Integer num;
     public Integer done;
     public String grid;
 
-    public vGrille(int lvl, int num, int done, String grid) {
+    public vGrid(int lvl, int num, int done, String grid) {
         this.lvl = lvl;
         this.num = num;
         this.done = done;
