@@ -1,52 +1,30 @@
 package com.clementlusson.sudoku;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import java.io.Serializable;
 
-public class vGrille implements Parcelable {
-    int level;
-    int num;
-    int done;
+public class vGrille implements Serializable {
 
-    public vGrille (){
+    public Integer lvl;
+    public Integer num;
+    public Integer done;
+    public String grid;
 
-    }
-    public vGrille(int level, int num, int done){
-        this.level = level;
+    public vGrille(int lvl, int num, int done, String grid) {
+        this.lvl = lvl;
         this.num = num;
         this.done = done;
-    }
-    @Override
-    public int describeContents()
-    {
-        return 0;
+        this.grid = grid;
     }
 
-    public void writeToParcel(Parcel dest, int flags)
-    {
-        dest.writeInt(num);
-        dest.writeInt(level);
-        dest.writeInt(done);
+    public Integer getLvl() {
+        return lvl;
     }
 
-    public static final Parcelable.Creator<vGrille> CREATOR = new Parcelable.Creator<vGrille>()
-    {
-        @Override
-        public vGrille createFromParcel(Parcel source)
-        {
-            return new vGrille(source);
-        }
+    public Integer getNum() {
+        return num;
+    }
 
-        @Override
-        public vGrille[] newArray(int size)
-        {
-            return new vGrille[size];
-        }
-    };
-
-    public vGrille(Parcel in) {
-        this.num = in.readInt();
-        this.level = in.readInt();
-        this.done = in.readInt();
+    public Integer getDone() {
+        return done;
     }
 }

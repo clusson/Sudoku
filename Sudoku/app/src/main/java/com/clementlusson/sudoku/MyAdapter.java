@@ -54,7 +54,7 @@ class MyAdapter extends BaseAdapter {
         TextView text1 = twoLineListItem.getText1();
         TextView text2 = twoLineListItem.getText2();
 
-        text1.setText(items.get(position).num + "   niveau:" + (int) items.get(position).level);
+        text1.setText(items.get(position).num + "   niveau:" + (int) items.get(position).lvl);
         text2.setText(items.get(position).done+" %");
         text2.setTextSize(22);
         if (items.get(position).done < 40)

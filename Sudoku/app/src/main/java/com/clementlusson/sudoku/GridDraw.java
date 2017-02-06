@@ -2,106 +2,160 @@ package com.clementlusson.sudoku;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
+
 public class GridDraw extends View implements View.OnTouchListener{
-    private static final String TAG = "Sudoku";
-    private static final int GRID_MARGIN = 5;
-    private int top, bottom, left, right;
+    NumberSelect selectedNumber = null;
 
-
-    private ChargeGrid game;
-    private int largeur;
-    private int hauteur;
-
-    String grid ="001700509573024106800501002700295018009400305652800007465080071000159004908007053";
+    Cell[][] arrCell = new Cell [9][9];
+    NumberSelect[] arrNumber = new NumberSelect[9];
+    Integer totalFillGrid;
+    Integer startFillGrid;
+    vGrille grid;
 
 
     public GridDraw(Context context, AttributeSet attrs) {
-        super(context,attrs);
-        this.setOnTouchListener(this);
-        this.game = (ChargeGrid) context;
+        super(context, attrs);
 
+        grid = ((GridChoice) context).getGrid();
+        int i = 0;
+        for(int column = 0; column < 9; column++){
+            for (int row = 0 ; row < 9; row++){
+                Cell c = new Cell(new CellNumber(Character.getNumericValue(grid.grid.toCharArray()[i])), new Pair(row, column), 100 * column, 100 * row, (100 * column + 100), (100 * row + 100));
+                arrCell[row][column] = c;
+                i += 1;
+            }
+        }
+        startFillGrid = getRemplissageGrid();
+        for(int place = 0; place < 9; place++){
+            arrNumber[place] = new NumberSelect(place + 1, 100 * place, 880 , 0, 100 * place);
+        }
     }
 
 
     @Override
     public void onDraw(Canvas canvas){
 
-        Paint grid = new Paint();
+        super.onDraw(canvas);
+        setOnTouchListener(this);
 
-        grid.setColor(Color.GRAY);
-        grid.setStyle(Paint.Style.STROKE);
-
-
-        //Taille des cases
-        int gm = 80;
-
-        for (int r=0; r<9; r++)
-        {
-            for (int c =0; c<9; c++ )
-            {
-                top = r*gm;
-                bottom = top+gm;
-                left = c*gm;
-                right = left+gm;
-                canvas.drawRect(left, top, right, bottom, grid);
+        for(Cell[] carr : arrCell){
+            for(Cell c : carr){
+                c.draw(canvas);
             }
         }
 
-        for (int i=0; i<9; i++)
-        {
-            top = 10*gm;
-            bottom = top+gm;
-            left = i*gm;
-            right = left+gm;
-            canvas.drawRect(left, top, right, bottom, grid);
-            grid.setTextSize(55);
-            canvas.drawText(String.valueOf(i+1),right-gm+23,bottom-20,grid);
-
+        Paint paint = new Paint();
+        paint.setStrokeWidth(2);
+        for (int row = 0 ; row < 9; row++) {
+            if(row % 3 == 0){
+                canvas.drawLine(0, row * 100, 900, row * 100, paint);
+            }
+        }
+        for (int column = 0 ; column < 9; column++) {
+            if(column % 3 == 0){
+                canvas.drawLine(column * 100, 0, column * 100, 900, paint);
+            }
         }
 
-        largeur = canvas.getWidth();
-        hauteur = canvas.getHeight();
 
-        Rect rect = new Rect();
+        for(NumberSelect se : arrNumber){
+            se.draw(canvas);
+        }
 
     }
     
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        int x = (int) (event.getX()/80) +1;
-        int y = (int) (event.getY()/80) +1;
+        int x = (int) event.getX();
+        int y =(int) event.getY();
+        Cell selectedcase = null;
 
-        switch (event.getAction())
-        {
+
+        switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
-                Toast.makeText(this.getContext(),"X" + x + " | Y" +y,Toast.LENGTH_SHORT).show();
+                for(NumberSelect c : arrNumber){
+                    if(c.isSelected(x, y)){
+                        selectedNumber = c;
+                    }
+                }
                 break;
-            case MotionEvent.ACTION_MOVE:
-
-                break;
-
             case MotionEvent.ACTION_UP:
+                for(Cell[] carr : arrCell){
+                    for(Cell c : carr){
+                        if(selectedNumber != null && c.isSelected(x, y)){
+                            selectedcase = c;
+                        }
+                    }
+                }
+                if(selectedcase != null){
+                    ArrayList<Cell> arrC = getGroupe(selectedcase);
+                    boolean ok = true;
+                    for(Cell c : arrC){
+                        if(c.i.content == selectedNumber.i){
+                            Log.d("Case", "case " + c.position.first + " " + c.position.second + " content : " + c.i.content);
+                            ok = false;
+                        }
+                    }
+                    if(ok){
+                        selectedcase.i.setNumber(selectedNumber.i);
+                        totalFillGrid = getRemplissageGrid();
+                        grid.done = (totalFillGrid - startFillGrid) / (81 - startFillGrid) * 100;
+                        grid.grid = getGrid();
+                    }
 
+                }
+                selectedNumber = null;
                 break;
         }
-        this.invalidate();
 
+        this.invalidate();
         return true;
+    }
+
+    public int getRemplissageGrid(){
+        int r = 0;
+        for(Cell[] arrC : this.arrCell){
+            for(Cell currentC : arrC){
+                if(currentC.i.content != 0){
+                    r+=1;
+                }
+            }
+        }
+        return r;
+    }
+
+    public String getGrid(){
+        StringBuilder r = new StringBuilder();
+        for(Cell[] arrC : this.arrCell){
+            for(Cell currentC : arrC){
+                if(currentC.i.content != 0){
+                    r.append(currentC.i.content);
+                }
+            }
+        }
+        return r.toString();
+    }
+
+    public ArrayList<Cell> getGroupe(Cell c){
+        ArrayList<Cell> rt = new ArrayList<>();
+        for(Cell[] arrC : this.arrCell){
+            for(Cell currentC : arrC){
+                if(c.isOnGroup(currentC)){
+                    rt.add(currentC);
+                }
+            }
+        }
+        return rt;
     }
 }
