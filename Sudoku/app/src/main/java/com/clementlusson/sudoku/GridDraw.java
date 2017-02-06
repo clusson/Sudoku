@@ -119,6 +119,16 @@ public class GridDraw extends View implements View.OnTouchListener{
                 }
                 selectedNumber = null;
                 break;
+                /*case MotionEvent.ACTION_MOVE:
+                    v.animate()
+                            .x(event.getRawX() + v.getX() - event.getRawX())
+                            .y(event.getRawY() + v.getY() - event.getRawY())
+                            .setDuration(0)
+                            .start();
+
+                    break;*/
+
+
         }
 
         this.invalidate();

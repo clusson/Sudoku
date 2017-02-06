@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class LevelChoice extends AppCompatActivity {
+public class ALevelChoice extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +43,12 @@ public class LevelChoice extends AppCompatActivity {
         String line;
         int i = 1;
 
-        final ArrayList<vGrid> grille = new ArrayList<>();
+        final ArrayList<vGrid> grid = new ArrayList<>();
 
         try {
             while ((line = reader.readLine()) != null) {
                 out.append(line);
-                grille.add(new vGrid(lvl, i, 0, line));
+                grid.add(new vGrid(lvl, i, 0, line));
                 i += 1;
             }
         } catch (IOException e) {
@@ -56,7 +56,7 @@ public class LevelChoice extends AppCompatActivity {
         }
 
 
-        ListView list = (ListView) findViewById(R.id.maliste);
+        ListView list = (ListView) findViewById(R.id.list);
         final LevelChoice self = this;
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -65,13 +65,13 @@ public class LevelChoice extends AppCompatActivity {
 
                 Intent intention = new Intent(self, Grid.class);
                 Bundle bdn = new Bundle();
-                bdn.putSerializable("grid", grille.get(position));
+                bdn.putSerializable("grid", grid.get(position));
                 intention.putExtras(bdn);
                 startActivity(intention);
             }
         });
 
-        list.setAdapter(new MyAdapter(this, grille));
+        list.setAdapter(new MyAdapter(this, grid));
 
     }
 }
