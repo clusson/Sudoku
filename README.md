@@ -9,7 +9,7 @@
 - La classe **GridDraw.java** sert de modèle afin de réaliser la grille de sudoku.
 - Les classes **Cell.java** et **CellNumber.java** sont utilisées pour dessiner les cases, et les numéros.
 
-##ToDo :
+#### Todo :
 
 - Timer (affiche le temps passé sur une partie)
 - Database avec SQLite + Pourcentage réalisé d'une partie
